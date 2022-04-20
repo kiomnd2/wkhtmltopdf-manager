@@ -37,6 +37,7 @@ public class HtmlStringPage implements Page.HTML_STRING, Clearable {
         try {
             File tempFile = new File(this.tempDirectory, "pdfFile_" + LocalDateTime.now() +".html");
             tempFile.createNewFile();
+            FileUtils.writeStringToFile(tempFile, getSource(), "UTF-8");
             return tempFile.getAbsolutePath();
         } catch (IOException e) {
             throw new PdfExportException();
