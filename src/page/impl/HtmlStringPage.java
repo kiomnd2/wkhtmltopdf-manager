@@ -2,13 +2,14 @@ package page.impl;
 
 import exception.PdfExportException;
 import org.apache.commons.io.FileUtils;
+import page.Clearable;
 import page.Page;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-public class HtmlStringPage implements Page.HTML_STRING{
+public class HtmlStringPage implements Page.HTML_STRING, Clearable {
 
     private String source;
 
@@ -40,5 +41,13 @@ public class HtmlStringPage implements Page.HTML_STRING{
         } catch (IOException e) {
             throw new PdfExportException();
         }
+    }
+
+    @Override
+    public boolean clear() throws IOException {
+        if (this.tempDirectory.exists()) {
+            return this.tempDirectory.delete();
+        }
+        return false;
     }
 }

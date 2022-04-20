@@ -1,5 +1,7 @@
 package page;
 
+import java.io.IOException;
+
 public interface Clearable {
-    boolean clear();
+    boolean clear() throws IOException;
 }
