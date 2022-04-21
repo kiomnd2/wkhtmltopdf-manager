@@ -1,20 +1,44 @@
+package config;
+
+import com.sun.tools.javac.util.StringUtils;
 import exception.NotFoundWkHtmlToPdfException;
 import exception.WrapperConfigException;
-import sun.security.util.IOUtils;
+import page.Page;
+import param.Param;
+import param.Params;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class PdfConfig {
 
     private final String wkHtmltoPdfCommand = "wkhtmltopdf";
 
     private final String STDINOUT = "-";
+
+    private HashSet<Page> pages = new HashSet<>();
+
+    private Params params;
+
+    public PdfConfig() {
+        this.params = new Params();
+    }
+
+    public void addParam(Param param) {
+        this.params.addParam(param);
+    }
+
+    public void addPage(Page page) {
+        this.pages.add(page);
+    }
+
+
 
     public static String findExcutable(int timeout) {
         String osName = System.getProperty("os.name").toLowerCase();
@@ -37,4 +61,24 @@ public class PdfConfig {
         return result;
     }
 
+    public String[] getWkhtmltopdfCommand() {
+        List<String> commandLine = new ArrayList<>();
+
+        commandLine.add(this.wkHtmltoPdfCommand);
+
+        if (!params.isEmpty()) {
+            commandLine.addAll(params.getParamsAsStringList());
+        }
+
+        for (Page page : pages) {
+            commandLine.add(page.getSourcePath());
+        }
+
+        return commandLine.toArray(new String[0]);
+    }
+
+
+    public String getCommand() {
+        return String.join("", getWkhtmltopdfCommand());
+    }
 }

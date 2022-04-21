@@ -40,7 +40,7 @@ public class HtmlStringPage implements Page.HTML_STRING, Clearable {
             FileUtils.writeStringToFile(tempFile, getSource(), "UTF-8");
             return tempFile.getAbsolutePath();
         } catch (IOException e) {
-            throw new PdfExportException();
+            throw new PdfExportException(e);
         }
     }
 
