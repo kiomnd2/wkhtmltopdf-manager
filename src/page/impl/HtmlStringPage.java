@@ -45,7 +45,7 @@ public class HtmlStringPage implements Page.HTML_STRING, Clearable {
     }
 
     @Override
-    public boolean clear() throws IOException {
+    public boolean clear() {
         if (this.tempDirectory.exists()) {
             return this.tempDirectory.delete();
         }

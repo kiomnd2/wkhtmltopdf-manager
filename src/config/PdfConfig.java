@@ -3,6 +3,7 @@ package config;
 import com.sun.tools.javac.util.StringUtils;
 import exception.NotFoundWkHtmlToPdfException;
 import exception.WrapperConfigException;
+import page.Clearable;
 import page.Page;
 import param.Param;
 import param.Params;
@@ -77,6 +78,14 @@ public class PdfConfig {
         return commandLine.toArray(new String[0]);
     }
 
+    public void clearTemp() {
+        pages.forEach(page -> {
+            if (page instanceof Clearable) {
+                Clearable c = (Clearable) page;
+                c.clear();
+            }
+        });
+    }
 
     public String getCommand() {
         return String.join("", getWkhtmltopdfCommand());
